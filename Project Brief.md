@@ -1,5 +1,6 @@
 INF1103 - Team 4 Project Scope Brief
 Team Members: Travis, Ming An, Jun Jie, Stephen, Phuc, Marcus
+
 1. Problem Statement and Target Users
 Singapore is unusually exposed to supply chain risk as it imports over 90% of its food from 187 countries,
 and trade equals 322% of GDP (2024), which is one of the highest such ratios in the world. At the same time,
@@ -8,6 +9,7 @@ TEUs in 2024, about 90% of its transshipment cargo, retaining its title as the w
 the 11th consecutive year. A disruption anywhere along a shipping route doesn't just delay a delivery to
 Singapore, it delays cargo passing through Singapore on its way elsewhere, which is the country's core
 economic function.
+
 To give some examples, on 20 May 2026, two bulk carriers Capesize CAPE XL and Newcastlemax HUGE
 KUMANO collided near Singapore's eastern anchorage, disabling both vessels. The same strait recorded 55
 piracy and armed-robbery incidents in 2022 alone (65% of every such incident in Asia that year), and
@@ -23,6 +25,7 @@ estimate, but a clear picture of what could go wrong along the way and what to d
 Target users: logistics and supply chain planners at Singapore-based importers, exporters, freight forwarders,
 and shipping agents who need to decide whether to proceed, delay, reroute, or insure an upcoming shipment
 before conditions along its route turn into a loss.
+
 2. User Inputs (What information or data will users provide to the system?)
 ● Route Origin and Destination: Our core geospatial and facility data, including specific origin facility
 codes, destination addresses, and possible geographic coordinates (latitude and longitude) to plot
@@ -37,6 +40,7 @@ shipment is expected to sit at each checkpoint.
 goods vehicle, cargo vessel), and internal route tracking IDs.
 ● Goods Information: What kind of cargo is being transported, including whether it is perishable,
 time-sensitive, fragile, or classified as high-value.
+
 3. Use of AI
 The application uses AI primarily to gather, analyse, and structure information from shipment data and external
 sources. The AI does not make the final operational decision, that responsibility stays with the Logic Manager.
@@ -49,6 +53,7 @@ expected impact, a confidence score, and supporting source information.
 ● 3. AI Insights: Beyond a single risk assessment, the AI can also flag potential delays or disruptions,
 multiple risks occurring simultaneously, historical issues on the same route, conflicting, outdated, or
 missing information, and situations that require human attention.
+
 4. Business Rules
 The Logic Manager will take the AIs validated JSON risk assessment. Run it through a strict set of business
 rules to decide the final operational outcome. These rules are split into three parts: validation checks,

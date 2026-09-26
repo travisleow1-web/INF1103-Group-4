@@ -5,6 +5,13 @@ import validator
 
 
 def ask_port(message):
+    """Prompt for a port with autocomplete over the port reference list.
+
+    Typing any part of the entry (code, name or country) narrows the
+    suggestions. Answers not in the list are rejected and the prompt repeats.
+    The chosen entry looks like "<code> - <name>, <country>", so only the
+    code before " - " is returned, upper-cased.
+    """
     answer = questionary.autocomplete(
         message,
         choices=validator.PORT_CHOICES,
@@ -15,19 +22,26 @@ def ask_port(message):
 
 
 def shipment_id():
+    """Prompt for a shipment ID and return it as typed (not validated yet)."""
     answer = questionary.text("Shipment ID:").ask()
     return answer
 
 
 def origin_port():
+    """Prompt for the origin port and return its code."""
     return ask_port("Origin port:")
 
 
 def destination_port():
+    """Prompt for the destination port and return its code."""
     return ask_port("Destination port:")
 
 
 def departure_time():
+    """Prompt for the departure date, re-asking until it is a valid DD/MM/YYYY.
+
+    Returns the date as a string with surrounding whitespace removed.
+    """
     answer = questionary.text(
         "Departure time (DD/MM/YYYY):", validate=validator.validate_date
     ).ask()
@@ -35,6 +49,10 @@ def departure_time():
 
 
 def arrival_time():
+    """Prompt for the arrival date, re-asking until it is a valid DD/MM/YYYY.
+
+    Returns the date as a string with surrounding whitespace removed.
+    """
     answer = questionary.text(
         "Arrival time (DD/MM/YYYY):", validate=validator.validate_date
     ).ask()
@@ -42,6 +60,14 @@ def arrival_time():
 
 
 def get_shipments():
+    """Collect one or more shipments from the user and return them as a DataFrame.
+
+    Each loop asks for one shipment's fields and appends them to one list per
+    column. Port latitude/longitude are looked up from the port reference, not
+    asked for. After each shipment the user chooses whether to add another.
+    The lists are then combined into a DataFrame with one row per shipment.
+    """
+    # One list per output column; index i across all lists is shipment i.
     ids = []
     origin_ports = []
     origin_lats = []
@@ -54,12 +80,14 @@ def get_shipments():
     while True:
         ids.append(shipment_id())
 
+        # Fill in the origin's coordinates from the chosen port code.
         origin = origin_port()
         origin_lat, origin_lon = validator.port_coordinates(origin)
         origin_ports.append(origin)
         origin_lats.append(origin_lat)
         origin_lons.append(origin_lon)
 
+        # Same for the destination.
         destination = destination_port()
         destination_lat, destination_lon = validator.port_coordinates(destination)
         destination_ports.append(destination)
@@ -73,6 +101,7 @@ def get_shipments():
             continue
         break
 
+    # Explicit dtypes keep columns typed correctly even when the lists are empty.
     return pd.DataFrame(
         {
             "shipment_id": pd.Series(ids, dtype="str"),

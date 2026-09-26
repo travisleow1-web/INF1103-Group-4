@@ -51,6 +51,21 @@ def validate_port(answer):
         return True
     return "Unknown port, pick one from the list"
 
+
+def validate_destination_port(answer, origin):
+    """Check that answer is a known port and not the origin, for use as a questionary validator.
+
+    origin is the already chosen origin port code. Returns True when valid,
+    otherwise an error message string.
+    """
+    result = validate_port(answer)
+    if result is not True:
+        return result
+    if answer.split(" - ")[0].strip().upper() == origin:
+        return "Destination must be different from the origin port."
+    return True
+
+
 def validate_csv_path(text):
     """Check that text is a path to an existing .csv file, for use as a questionary validator."""
     value = text.strip()

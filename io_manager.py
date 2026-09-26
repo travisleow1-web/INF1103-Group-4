@@ -6,19 +6,19 @@ import questionary
 import validator
 
 
-def ask_port(message):
+def ask_port(message, validate=validator.validate_port):
     """Prompt for a port with autocomplete over the port reference list.
 
     Typing any part of the entry (code, name or country) narrows the
-    suggestions. Answers not in the list are rejected and the prompt repeats.
-    The chosen entry looks like "<code> - <name>, <country>", so only the
-    code before " - " is returned, upper-cased.
+    suggestions. Answers that fail validate are rejected and the prompt
+    repeats. The chosen entry looks like "<code> - <name>, <country>", so
+    only the code before " - " is returned, upper-cased.
     """
     answer = questionary.autocomplete(
         message,
         choices=validator.PORT_CHOICES,
         match_middle=True,
-        validate=validator.validate_port,
+        validate=validate,
     ).ask()
     return answer.split(" - ")[0].strip().upper()
 
@@ -34,9 +34,16 @@ def origin_port():
     return ask_port("Origin port:")
 
 
-def destination_port():
-    """Prompt for the destination port and return its code."""
-    return ask_port("Destination port:")
+def destination_port(origin):
+    """Prompt for the destination port and return its code.
+
+    The origin port code is rejected so a shipment can't start and end at
+    the same port.
+    """
+    return ask_port(
+        "Destination port:",
+        validate=lambda answer: validator.validate_destination_port(answer, origin),
+    )
 
 
 def departure_time():
@@ -90,7 +97,7 @@ def manual_shipments():
         origin_lons.append(origin_lon)
 
         # Same for the destination.
-        destination = destination_port()
+        destination = destination_port(origin)
         destination_lat, destination_lon = validator.port_coordinates(destination)
         destination_ports.append(destination)
         destination_lats.append(destination_lat)

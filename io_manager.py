@@ -1,7 +1,28 @@
+import json
+
 import pandas as pd
 import questionary
 
 from validator import validate_date
+
+with open("ports_reference_4.json") as f:
+    PORTS = json.load(f)["ports"]
+
+PORT_CHOICES = [f"{p['code']} - {p['name']}, {p['country']}" for p in PORTS]
+
+
+def validate_port(answer):
+    if answer in PORT_CHOICES:
+        return True
+    return "Unknown port, pick one from the list"
+
+
+def ask_port(message):
+    answer = questionary.autocomplete(
+        message, choices=PORT_CHOICES, match_middle=True, validate=validate_port
+    ).ask()
+
+    return answer.split(" - ")[0].strip().upper()
 
 
 def shipment_id():
@@ -10,22 +31,24 @@ def shipment_id():
 
 
 def origin_port():
-    answer = questionary.text("Origin port (e.g. SGSIN):").ask()
-    return answer.strip().upper()
+    return ask_port("Origin port:")
 
 
 def destination_port():
-    answer = questionary.text("Destination port (e.g. SGSIN):").ask()
-    return answer.strip().upper()
+    return ask_port("Destination port:")
 
 
 def departure_time():
-    answer = questionary.text("Departure time (DD/MM/YYYY):", validate=validate_date).ask()
+    answer = questionary.text(
+        "Departure time (DD/MM/YYYY):", validate=validate_date
+    ).ask()
     return answer.strip()
 
 
 def arrival_time():
-    answer = questionary.text("Arrival time (DD/MM/YYYY):", validate=validate_date).ask()
+    answer = questionary.text(
+        "Arrival time (DD/MM/YYYY):", validate=validate_date
+    ).ask()
     return answer.strip()
 
 

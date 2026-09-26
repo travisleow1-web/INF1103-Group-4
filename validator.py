@@ -5,6 +5,12 @@ with open("ports_reference_4.json") as f:
     PORTS = json.load(f)["ports"]
 
 PORT_CHOICES = [f"{p['code']} - {p['name']}, {p['country']}" for p in PORTS]
+PORTS_BY_CODE = {p["code"]: p for p in PORTS}
+
+
+def port_coordinates(code):
+    port = PORTS_BY_CODE[code]
+    return port["lat"], port["lon"]
 
 
 def validate_date(text):

@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import questionary
 
@@ -59,7 +61,7 @@ def arrival_time():
     return answer.strip()
 
 
-def get_shipments():
+def manual_shipments():
     """Collect one or more shipments from the user and return them as a DataFrame.
 
     Each loop asks for one shipment's fields and appends them to one list per
@@ -117,5 +119,39 @@ def get_shipments():
     )
 
 
+def input_method():
+    """Ask whether shipments are entered manually or loaded from a CSV file."""
+    selection = questionary.select(
+        "How do you want to add shipments?",
+        choices=["Enter manually", "Upload a CSV file"],
+    ).ask()
+    if selection == "Upload a CSV file":
+        return csv_shipments()
+    return manual_shipments()
+
+
+def csv_shipments():
+    """Load shipments from a CSV file and return them as a DataFrame.
+
+    The file needs the columns in CSV_COLUMNS; port lat/lon are looked up from
+    the port reference like in manual entry. If the file can't be read or any
+    row is invalid, the errors are shown and the user is asked for a path again.
+    """
+    while True:
+        path = questionary.path("CSV file path:", validate=validator.validate_csv_path).ask()
+        try:
+            # Read everything as text and turn blank cells into "" so the
+            # checks below don't have to deal with NaN.
+            df = pd.read_csv(path.strip(), dtype=str, keep_default_na=False)
+        except (
+            pd.errors.ParserError,
+            pd.errors.EmptyDataError,
+            UnicodeDecodeError,
+        ) as e:
+            print(f"Could not read file: {e}")
+            continue
+        print(df)
+
 if __name__ == "__main__":
-    print(get_shipments())
+    print(input_method())
+

@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import UTC, datetime
 
 # Load the port reference once at import time. The path is relative, so the
@@ -49,3 +50,14 @@ def validate_port(answer):
     if answer in PORT_CHOICES:
         return True
     return "Unknown port, pick one from the list"
+
+def validate_csv_path(text):
+    """Check that text is a path to an existing .csv file, for use as a questionary validator."""
+    value = text.strip()
+    if value == "":
+        return "File path is required."
+    if not value.lower().endswith(".csv"):
+        return "File must be a .csv file."
+    if not os.path.isfile(value):
+        return "File not found."
+    return True

@@ -1,0 +1,161 @@
+[
+  {
+    "shipment_id": "SG-261003023903",
+    "route_id": "SIN-CHI",
+    "origin": "Singapore",
+    "destination": "China",
+    "waypoints": [
+      "Malaysia"
+    ],
+    "transport_mode": "sea",
+    "transport_type": "Light Freight",
+    "load_weight_kg": 20000.0,
+    "load_volume_m3": 10.0,
+    "departure_date": "2026-10-09",
+    "expected_arrival": "2026-10-20",
+    "carrier": "USS Gladuati",
+    "goods": {
+      "description": "Gold",
+      "perishable": true,
+      "time_sensitive": true,
+      "fragile": true,
+      "high_value": true,
+      "hazardous": false
+    },
+    "baseline_distance_km": null,
+    "decision": {
+      "shipment_id": "SG-261003023903",
+      "overall_risk": "Low",
+      "outcome": "REJECT",
+      "hold_shipment": false,
+      "needs_human": true,
+      "flags": [
+        "Incomplete AI record"
+      ],
+      "actions": [],
+      "alerts": [],
+      "rationale": [
+        "Validation failed: missing fields ['risk_factors', 'primary_risk_factor', 'affected_location', 'expected_impact', 'confidence_score', 'sources']"
+      ]
+    },
+    "saved_at": "2026-10-03T02:39:20.039304",
+    "flagged": true,
+    "delayed": false
+  },
+  {
+    "shipment_id": "SG-261003024159",
+    "route_id": "SIN-CHI",
+    "origin": "Singapore",
+    "destination": "China",
+    "waypoints": [
+      "Malaysia"
+    ],
+    "transport_mode": "sea",
+    "transport_type": "Heavy Freight",
+    "load_weight_kg": 14000.0,
+    "load_volume_m3": 10000.0,
+    "departure_date": "2026-10-19",
+    "expected_arrival": "2026-11-01",
+    "carrier": "Gladius",
+    "goods": {
+      "description": "Gold and Jewelry",
+      "perishable": true,
+      "time_sensitive": false,
+      "fragile": true,
+      "high_value": true,
+      "hazardous": false
+    },
+    "baseline_distance_km": null,
+    "decision": {
+      "shipment_id": "SG-261003024159",
+      "overall_risk": "Low",
+      "outcome": "REJECT",
+      "hold_shipment": false,
+      "needs_human": true,
+      "flags": [
+        "Incomplete AI record"
+      ],
+      "actions": [],
+      "alerts": [],
+      "rationale": [
+        "Validation failed: missing fields ['risk_factors', 'primary_risk_factor', 'affected_location', 'expected_impact', 'confidence_score', 'sources']"
+      ]
+    },
+    "saved_at": "2026-10-03T02:42:32.698245",
+    "flagged": true,
+    "delayed": false
+  },
+  {
+    "shipment_id": "SG-261003024916",
+    "route_id": "SIN-MAL",
+    "origin": "Singapore",
+    "destination": "Malaysia",
+    "waypoints": [],
+    "transport_mode": "sea",
+    "transport_type": "Light Freight",
+    "load_weight_kg": 20000.0,
+    "load_volume_m3": 2000.0,
+    "departure_date": "2026-10-06",
+    "expected_arrival": "2026-10-10",
+    "carrier": "Gladius",
+    "goods": {
+      "description": "Gold and Chocolates",
+      "perishable": true,
+      "time_sensitive": false,
+      "fragile": true,
+      "high_value": true,
+      "hazardous": false
+    },
+    "baseline_distance_km": null,
+    "risk_factors": [
+      {
+        "type": "weather",
+        "severity": "Medium",
+        "detail": "Wind gusts reach up to 45.0 km/h in Singapore and moderate precipitation in Malaysia."
+      },
+      {
+        "type": "severe_crosswinds",
+        "severity": "Low",
+        "detail": "Wind gusts are present in Singapore route."
+      }
+    ],
+    "primary_risk_factor": "weather",
+    "affected_location": "Singapore and Malaysia",
+    "expected_impact": "Delay",
+    "confidence_score": 0.8,
+    "sources": [
+      "open-meteo.com"
+    ],
+    "conflicting_sources": false,
+    "extreme_event": "Moderate weather conditions with rain and wind gusts",
+    "insights": [
+      "Precipitation and wind gusts recorded along the route.",
+      "News source failed to load, leading to lower confidence score."
+    ],
+    "external_data_fetched_at": "2026-10-03 02:50:14.035502",
+    "external_data_errors": [
+      "news"
+    ],
+    "decision": {
+      "shipment_id": "SG-261003024916",
+      "overall_risk": "Medium",
+      "outcome": "PROCEED",
+      "hold_shipment": false,
+      "needs_human": false,
+      "flags": [
+        "Asset Reallocated"
+      ],
+      "actions": [
+        "Reassign load to a Heavy Freight carrier",
+        "Proceed with monitoring"
+      ],
+      "alerts": [],
+      "rationale": [
+        "Rule 2: Severe Crosswinds + Light Freight, moved to Heavy Freight (rollover risk)"
+      ]
+    },
+    "saved_at": "2026-10-03T02:50:14.036574",
+    "flagged": true,
+    "delayed": false
+  }
+]
